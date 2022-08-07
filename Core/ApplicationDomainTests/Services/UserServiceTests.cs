@@ -1,8 +1,8 @@
-using ApplicationDomain.Entities;
-using ApplicationDomain.Services.UserService;
-using ApplicationDomain.Services.UserService.Interfaces;
+using CloudIn.Core.ApplicationDomain.Entities;
+using CloudIn.Core.ApplicationDomain.Services.UserService;
+using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
 
-namespace ApplicationDomainTests.Services;
+namespace CloudIn.Core.ApplicationDomainTests.Services;
 
 [TestClass]
 public class UserServiceTests

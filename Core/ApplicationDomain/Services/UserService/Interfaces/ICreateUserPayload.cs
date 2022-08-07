@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApplicationDomain.Services.UserService.Interfaces;
+namespace CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
 
 public class ICreateUserPayload
 {

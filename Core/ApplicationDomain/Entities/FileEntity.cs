@@ -1,4 +1,4 @@
-namespace ApplicationDomain.Entities;
+namespace CloudIn.Core.ApplicationDomain.Entities;
 
 public class FileEntity
 {

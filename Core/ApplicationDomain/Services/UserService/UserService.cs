@@ -1,7 +1,7 @@
-using ApplicationDomain.Entities;
-using ApplicationDomain.Services.UserService.Interfaces;
+using CloudIn.Core.ApplicationDomain.Entities;
+using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
 
-namespace ApplicationDomain.Services.UserService;
+namespace CloudIn.Core.ApplicationDomain.Services.UserService;
 
 public class UserService : IUserService
 {
