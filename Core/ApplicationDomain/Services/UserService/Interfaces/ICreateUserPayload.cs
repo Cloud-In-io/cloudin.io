@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
+using CloudIn.Core.ApplicationDomain.Entities;
 
 namespace CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
 
@@ -18,4 +20,14 @@ public class ICreateUserPayload
     [Required]
     [MaxLength(50)]
     public string Password { get; set; } = default!;
+}
+
+public class ICreateUserPayloadMapper : Profile
+{
+    //Source -> Target
+    public ICreateUserPayloadMapper()
+    {
+        CreateMap<ICreateUserPayload, UserEntity>()
+            .ForMember(dest => dest.Password, opts => opts.Ignore());
+    }
 }
