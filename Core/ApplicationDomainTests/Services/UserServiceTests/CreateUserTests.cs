@@ -1,4 +1,3 @@
-using AutoMapper;
 using CloudIn.Core.ApplicationDomain.Entities;
 using CloudIn.Core.ApplicationDomain.Services.UserService;
 using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
@@ -6,18 +5,8 @@ using CloudIn.Core.ApplicationDomainTests.Mocks.Repositories;
 
 namespace CloudIn.Core.ApplicationDomainTests.Services;
 
-[TestClass]
-public class UserServiceTests
+public partial class UserServiceTests
 {
-    private readonly IMapper _mapper;
-
-    public UserServiceTests()
-    {
-        var myAssembly = AppDomain.CurrentDomain.GetAssemblies();
-        var mapperConfig = new MapperConfiguration(opts => opts.AddMaps(myAssembly));
-        _mapper = mapperConfig.CreateMapper();
-    }
-
     [TestMethod]
     public async Task Should_Create_An_User()
     {
