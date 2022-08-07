@@ -1,22 +1,29 @@
+using AutoMapper;
 using CloudIn.Core.ApplicationDomain.Entities;
 using CloudIn.Core.ApplicationDomain.Services.UserService;
 using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
+using CloudIn.Core.ApplicationDomainTests.Mocks.Repositories;
 
 namespace CloudIn.Core.ApplicationDomainTests.Services;
 
 [TestClass]
 public class UserServiceTests
 {
-    private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
     public UserServiceTests()
     {
-        _userService = new UserService();
+        var myAssembly = AppDomain.CurrentDomain.GetAssemblies();
+        var mapperConfig = new MapperConfiguration(opts => opts.AddMaps(myAssembly));
+        _mapper = mapperConfig.CreateMapper();
     }
 
     [TestMethod]
     public async Task Should_Create_An_User()
     {
+        var repository = new MockUserRepository();
+        var _userService = new UserService(_mapper, repository);
+
         ICreateUserPayload createUserPayload =
             new()
             {
@@ -31,5 +38,6 @@ public class UserServiceTests
         Assert.IsNotNull(user);
         Assert.IsInstanceOfType(user, typeof(UserEntity));
         Assert.AreEqual(createUserPayload.Email, user.Email);
+        Assert.AreEqual(1, repository.Users.Count);
     }
 }
