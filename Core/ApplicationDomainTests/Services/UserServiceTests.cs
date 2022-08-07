@@ -1,4 +1,5 @@
 using ApplicationDomain.Entities;
+using ApplicationDomain.Services.UserService;
 using ApplicationDomain.Services.UserService.Interfaces;
 
 namespace ApplicationDomainTests.Services;
@@ -7,6 +8,11 @@ namespace ApplicationDomainTests.Services;
 public class UserServiceTests
 {
     private readonly IUserService _userService;
+
+    public UserServiceTests()
+    {
+        _userService = new UserService();
+    }
 
     [TestMethod]
     public async Task Should_Create_An_User()
