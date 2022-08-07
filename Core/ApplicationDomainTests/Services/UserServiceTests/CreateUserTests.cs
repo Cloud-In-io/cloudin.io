@@ -29,4 +29,24 @@ public partial class UserServiceTests
         Assert.AreEqual(createUserPayload.Email, user.Email);
         Assert.AreEqual(1, repository.Users.Count);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(DuplicateWaitObjectException))]
+    public async Task Should_Try_Duplicate_An_User()
+    {
+        var repository = new MockUserRepository();
+        var _userService = new UserService(_mapper, repository);
+
+        ICreateUserPayload createUserPayload =
+            new()
+            {
+                FirstName = "Foo",
+                LastName = "Bar",
+                Email = "foo@bar.com",
+                Password = "P@s5w0rd123"
+            };
+
+        var user = await _userService.CreateUserAsync(createUserPayload);
+        var user2 = await _userService.CreateUserAsync(createUserPayload);
+    }
 }
