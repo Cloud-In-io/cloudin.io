@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using CloudIn.Core.ApplicationDomain.Entities;
 using CloudIn.Core.ApplicationDomain.Services.UserService;
 using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
@@ -48,5 +49,23 @@ public partial class UserServiceTests
 
         var user = await _userService.CreateUserAsync(createUserPayload);
         var user2 = await _userService.CreateUserAsync(createUserPayload);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public async Task Should_Try_Create_With_Bad_Data()
+    {
+        var repository = new MockUserRepository();
+        var _userService = new UserService(_mapper, repository);
+
+        ICreateUserPayload createUserPayload =
+            new()
+            {
+                LastName = "Bar",
+                Email = "foo.com",
+                Password = "123"
+            };
+
+        var user = await _userService.CreateUserAsync(createUserPayload);
     }
 }

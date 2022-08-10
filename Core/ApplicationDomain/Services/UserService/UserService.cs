@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 using CloudIn.Core.ApplicationDomain.Entities;
@@ -28,6 +29,13 @@ public class UserService : IUserService
                 parameterName: nameof(createUserPayload.Email)
             );
         }
+
+        var ctx = new ValidationContext(createUserPayload);
+        Validator.ValidateObject(
+            instance: createUserPayload,
+            validationContext: ctx,
+            validateAllProperties: true
+        );
 
         var user = _mapper.Map<UserEntity>(createUserPayload);
         user.Id = new Guid();
