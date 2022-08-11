@@ -32,6 +32,28 @@ public partial class UserServiceTests
     }
 
     [TestMethod]
+    public async Task Should_Create_An_User_With_Root_Folder()
+    {
+        var repository = new MockUserRepository();
+        var _userService = new UserService(_mapper, repository);
+
+        ICreateUserPayload createUserPayload =
+            new()
+            {
+                FirstName = "Foo",
+                LastName = "Bar",
+                Email = "foo@bar.com",
+                Password = "P@s5w0rd123"
+            };
+
+        var user = await _userService.CreateUserAsync(createUserPayload);
+
+        Assert.IsNotNull(user.RootFolder);
+        Assert.IsInstanceOfType(user.RootFolder, typeof(FolderEntity));
+        Assert.AreEqual(1, user.Folders.Count);
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(DuplicateWaitObjectException))]
     public async Task Should_Try_Duplicate_An_User()
     {

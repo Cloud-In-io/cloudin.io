@@ -5,7 +5,7 @@ namespace CloudIn.Core.ApplicationDomainTests.Mocks.Repositories;
 
 public class MockUserRepository : IUserRepository
 {
-    public List<UserEntity> Users { get; private set; } = new();
+    public HashSet<UserEntity> Users { get; private set; } = new();
 
     public Task AddAsync(UserEntity entity)
     {
