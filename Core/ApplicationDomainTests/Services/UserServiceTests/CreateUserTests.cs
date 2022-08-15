@@ -11,8 +11,9 @@ public partial class UserServiceTests
     [TestMethod]
     public async Task Should_Create_An_User()
     {
-        var repository = new MockUserRepository();
-        var _userService = new UserService(_mapper, repository);
+        var userRepository = new MockUserRepository();
+        var folderRepository = new MockFolderRepository();
+        var _userService = new UserService(_mapper, userRepository, folderRepository);
 
         ICreateUserPayload createUserPayload =
             new()
@@ -26,18 +27,21 @@ public partial class UserServiceTests
         var user = await _userService.CreateUserAsync(createUserPayload);
 
         Assert.IsNotNull(user);
-        Assert.AreEqual(1, repository.Users.Count);
         Assert.IsInstanceOfType(user, typeof(UserEntity));
         Assert.AreNotEqual(Guid.Empty, user.RootFolderId);
         Assert.AreEqual(createUserPayload.Email, user.Email);
+
+        Assert.AreEqual(1, userRepository.Users.Count);
+        Assert.AreEqual(1, folderRepository.Folders.Count);
     }
 
     [TestMethod]
     [ExpectedException(typeof(DuplicateWaitObjectException))]
     public async Task Should_Try_Duplicate_An_User()
     {
-        var repository = new MockUserRepository();
-        var _userService = new UserService(_mapper, repository);
+        var userRepository = new MockUserRepository();
+        var folderRepository = new MockFolderRepository();
+        var _userService = new UserService(_mapper, userRepository, folderRepository);
 
         ICreateUserPayload createUserPayload =
             new()
@@ -56,8 +60,9 @@ public partial class UserServiceTests
     [ExpectedException(typeof(ValidationException))]
     public async Task Should_Try_Create_With_Bad_Data()
     {
-        var repository = new MockUserRepository();
-        var _userService = new UserService(_mapper, repository);
+        var userRepository = new MockUserRepository();
+        var folderRepository = new MockFolderRepository();
+        var _userService = new UserService(_mapper, userRepository, folderRepository);
 
         ICreateUserPayload createUserPayload =
             new()
