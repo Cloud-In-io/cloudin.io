@@ -26,31 +26,10 @@ public partial class UserServiceTests
         var user = await _userService.CreateUserAsync(createUserPayload);
 
         Assert.IsNotNull(user);
-        Assert.IsInstanceOfType(user, typeof(UserEntity));
-        Assert.AreEqual(createUserPayload.Email, user.Email);
         Assert.AreEqual(1, repository.Users.Count);
-    }
-
-    [TestMethod]
-    public async Task Should_Create_An_User_With_Root_Folder()
-    {
-        var repository = new MockUserRepository();
-        var _userService = new UserService(_mapper, repository);
-
-        ICreateUserPayload createUserPayload =
-            new()
-            {
-                FirstName = "Foo",
-                LastName = "Bar",
-                Email = "foo@bar.com",
-                Password = "P@s5w0rd123"
-            };
-
-        var user = await _userService.CreateUserAsync(createUserPayload);
-
-        Assert.IsNotNull(user.RootFolder);
-        Assert.IsInstanceOfType(user.RootFolder, typeof(FolderEntity));
-        Assert.AreEqual(1, user.Folders.Count);
+        Assert.IsInstanceOfType(user, typeof(UserEntity));
+        Assert.AreNotEqual(Guid.Empty, user.RootFolderId);
+        Assert.AreEqual(createUserPayload.Email, user.Email);
     }
 
     [TestMethod]

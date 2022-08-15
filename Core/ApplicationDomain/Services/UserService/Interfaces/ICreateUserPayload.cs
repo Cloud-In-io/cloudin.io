@@ -28,6 +28,8 @@ public class ICreateUserPayloadMapper : Profile
     public ICreateUserPayloadMapper()
     {
         CreateMap<ICreateUserPayload, UserEntity>()
+            .ForPath(dest => dest.Name.FirstName, opts => opts.MapFrom(src => src.FirstName))
+            .ForPath(dest => dest.Name.LastName, opts => opts.MapFrom(src => src.LastName))
             .ForMember(dest => dest.Password, opts => opts.Ignore());
     }
 }

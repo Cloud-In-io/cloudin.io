@@ -8,13 +8,15 @@ public class FolderEntity
         Folders = new HashSet<FolderEntity>();
     }
 
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    public Guid OwnerUserId { get; set; } = default!;
+
+    public Guid? ParentFolderId { get; set; }
 
     public string Name { get; set; } = default!;
 
-    public virtual UserEntity OwnerUser { get; set; } = default!;
-
-    public virtual FolderEntity? ParentFolder { get; set; }
+    public bool IsRootFolder { get; set; } = false;
 
     public virtual ICollection<FileEntity> Files { get; set; } = default!;
 

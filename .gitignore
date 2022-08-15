@@ -32,6 +32,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+roadmap.md
+
 # Visual Studio Code cache/options directory
 .vscode/
 
