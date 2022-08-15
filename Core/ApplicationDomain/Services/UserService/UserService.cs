@@ -12,10 +12,17 @@ public class UserService : IUserService
 
     private readonly IUserRepository _userRepository;
 
-    public UserService(IMapper mapper, IUserRepository userRepository)
+    private readonly IFolderRepository _folderRepository;
+
+    public UserService(
+        IMapper mapper,
+        IUserRepository userRepository,
+        IFolderRepository folderRepository
+    )
     {
         _mapper = mapper;
         _userRepository = userRepository;
+        _folderRepository = folderRepository;
     }
 
     public async Task<UserEntity> CreateUserAsync(ICreateUserPayload createUserPayload)
@@ -40,10 +47,18 @@ public class UserService : IUserService
         var user = _mapper.Map<UserEntity>(createUserPayload);
         user.Password = createUserPayload.Password; // Should Encrypt here
 
-        await _userRepository.AddAsync(user);
-        var wasSaved = await _userRepository.SaveChangesAsync();
+        var folder = new FolderEntity();
 
-        if (!wasSaved)
+        folder.SetAsRootFolder(user);
+        user.SetRootFolder(folder);
+
+        await _userRepository.AddAsync(user);
+        await _folderRepository.AddAsync(folder);
+
+        var wasUserSaved = await _userRepository.SaveChangesAsync();
+        var wasFolderSaved = await _folderRepository.SaveChangesAsync();
+
+        if (!wasUserSaved || !wasFolderSaved)
         {
             throw new Exception("Could not save this user");
         }
