@@ -11,6 +11,11 @@ public class UserEntity
     public UserName Name { get; set; } = default!;
 
     public string Password { get; set; } = default!;
+
+    public void SetRootFolder(FolderEntity folder)
+    {
+        RootFolderId = folder.Id;
+    }
 }
 
 public class UserName
