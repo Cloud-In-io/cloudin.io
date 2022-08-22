@@ -22,10 +22,17 @@ public class FolderEntity
 
     public virtual ICollection<FolderEntity> Folders { get; set; } = default!;
 
-    public void SetAsRootFolder(UserEntity user)
+    public void SetAsRootFolder(UserEntity ownerUser)
     {
-        OwnerUserId = user.Id;
+        OwnerUserId = ownerUser.Id;
         ParentFolderId = null;
         IsRootFolder = true;
+    }
+
+    public void SetAsChildFolder(FolderEntity parentFolder, UserEntity ownerUser)
+    {
+        OwnerUserId = ownerUser.Id;
+        ParentFolderId = parentFolder.Id;
+        IsRootFolder = false;
     }
 }
