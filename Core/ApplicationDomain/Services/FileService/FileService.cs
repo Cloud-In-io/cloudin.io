@@ -3,6 +3,7 @@ using CloudIn.Core.ApplicationDomain.Entities;
 using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 using CloudIn.Core.ApplicationDomain.Contracts.Providers.FileSystemProvider;
 using CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace CloudIn.Core.ApplicationDomain.Services.FileService;
 
@@ -29,9 +30,42 @@ public class FileService : IFileService
         _userRepository = userRepository;
     }
 
-    public Task<FileEntity> CreateFileAsync(ICreateFilePayload createFilePayload)
+    public async Task<FileEntity> CreateFileAsync(ICreateFilePayload createFilePayload)
     {
-        throw new NotImplementedException();
+        var ctx = new ValidationContext(createFilePayload);
+        Validator.ValidateObject(
+            instance: createFilePayload,
+            validationContext: ctx,
+            validateAllProperties: true
+        );
+
+        var ownerUser = await _userRepository.GetByIdAsync(createFilePayload.OwnerUserId);
+        if (ownerUser == null)
+        {
+            throw new Exception("Owner user not found or not exists");
+        }
+
+        var parentFolder = await _folderRepository.GetByIdAsync(createFilePayload.ParentFolderId);
+        if (parentFolder == null)
+        {
+            throw new Exception("Parent folder not found or not exists");
+        }
+
+        var file = _mapper.Map<FileEntity>(createFilePayload);
+
+        file.MoveToFolder(parentFolder);
+        parentFolder.AddFile(file);
+
+        await _fileRepository.AddAsync(file);
+
+        var wasFileSaved = await _fileRepository.SaveChangesAsync();
+
+        if (!wasFileSaved)
+        {
+            throw new Exception("Could not save this file");
+        }
+
+        return file;
     }
 
     public Task<FileEntity> WriteFileContentAsync(ICreateFilePayload createFilePayload)
