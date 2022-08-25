@@ -7,6 +7,9 @@ namespace CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
 public class IWriteFileContentPayload
 {
     [Required]
+    public Guid FileId { get; set; } = default!;
+
+    [Required]
     public Stream Content { get; set; } = default!;
 
     [Required]

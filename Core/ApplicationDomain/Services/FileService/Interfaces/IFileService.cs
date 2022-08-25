@@ -6,5 +6,5 @@ public interface IFileService
 {
     Task<FileEntity> CreateFileAsync(ICreateFilePayload createFilePayload);
 
-    Task<FileEntity> WriteFileContentAsync(ICreateFilePayload createFilePayload);
+    Task<FileEntity> WriteFileContentAsync(IWriteFileContentPayload fileContentPayload);
 }

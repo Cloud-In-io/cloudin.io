@@ -68,7 +68,7 @@ public class FileService : IFileService
         return file;
     }
 
-    public Task<FileEntity> WriteFileContentAsync(ICreateFilePayload createFilePayload)
+    public Task<FileEntity> WriteFileContentAsync(IWriteFileContentPayload fileContentPayload)
     {
         throw new NotImplementedException();
     }
