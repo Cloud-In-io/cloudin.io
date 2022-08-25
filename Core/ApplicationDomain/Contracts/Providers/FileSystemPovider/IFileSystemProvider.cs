@@ -1,4 +1,4 @@
-namespace CloudIn.Core.ApplicationDomain.Contracts.Providers;
+namespace CloudIn.Core.ApplicationDomain.Contracts.Providers.FileSystemProvider;
 
 public interface IFileSystemProvider
 {
@@ -6,8 +6,9 @@ public interface IFileSystemProvider
     /// Writes on file system provider than returns the filepath
     /// </summary>
     /// <param name="content"></param>
+    /// <param name="filename"></param>
     /// <returns></returns>
-    Task<string> WriteAsync(Stream content);
+    Task<string> WriteAsync(IWriteFileValues fileValues);
 
     Task RemoveAsync(string filepath);
 }

@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using CloudIn.Core.ApplicationDomain.Contracts.Providers;
-using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 using CloudIn.Core.ApplicationDomain.Entities;
+using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
+using CloudIn.Core.ApplicationDomain.Contracts.Providers.FileSystemProvider;
 using CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
 
 namespace CloudIn.Core.ApplicationDomain.Services.FileService;
