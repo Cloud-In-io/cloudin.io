@@ -12,5 +12,10 @@ public class FileEntity
 
     public string? PhysicalPath { get; set; }
 
-    public virtual FolderEntity ParentFolder { get; set; } = default!;
+    public virtual FolderEntity ParentFolder { get; protected set; } = default!;
+
+    public void MoveToFolder(FolderEntity folder)
+    {
+        ParentFolder = folder;
+    }
 }

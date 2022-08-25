@@ -18,7 +18,7 @@ public class FolderEntity
 
     public bool IsRootFolder { get; protected set; } = false;
 
-    public virtual ICollection<FileEntity> Files { get; set; } = default!;
+    public virtual ICollection<FileEntity> Files { get; protected set; } = default!;
 
     public virtual ICollection<FolderEntity> Folders { get; set; } = default!;
 
@@ -35,4 +35,6 @@ public class FolderEntity
         ParentFolderId = parentFolder.Id;
         IsRootFolder = false;
     }
+
+    public void AddFile(FileEntity file) => Files.Add(file);
 }
