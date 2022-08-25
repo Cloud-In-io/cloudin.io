@@ -1,4 +1,3 @@
-using CloudIn.Core.ApplicationDomain.Entities;
 using CloudIn.Core.ApplicationDomain.Services.FileService;
 using CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
 using CloudIn.Core.ApplicationDomainTests.Mocks.Repositories;
@@ -8,7 +7,7 @@ namespace CloudIn.Core.ApplicationDomainTests.Services;
 public partial class FileServiceTests
 {
     [TestMethod]
-    public async Task Should_Create_A_File()
+    public async Task Should_Write_A_File()
     {
         var fileRepository = new MockFileRepository();
         var fileSystemProvider = new MockFileSystemProvider();
@@ -30,14 +29,21 @@ public partial class FileServiceTests
 
         var file = await fileService.CreateFileAsync(filePayload);
 
-        Assert.IsNotNull(file);
-        Assert.IsNull(file.PhysicalPath);
-        Assert.IsInstanceOfType(file, typeof(FileEntity));
-        Assert.AreEqual(file.Name, file.Name);
-        Assert.AreEqual(filePayload.OwnerUserId, file.OwnerUserId);
-        Assert.AreSame(_folder, file.ParentFolder);
+        IWriteFileContentPayload fileContentPayload =
+            new()
+            {
+                FileId = file.Id,
+                Content = Stream.Null,
+                MimeType = "image/png"
+            };
 
-        Assert.AreEqual(1, _folder.Files.Count);
-        Assert.AreEqual(1, fileRepository.Files.Count);
+        var writtenFile = await fileService.WriteFileContentAsync(fileContentPayload);
+
+        var expectedPath = $"{file.Id}/file.png";
+
+        Assert.IsNotNull(writtenFile);
+        Assert.IsNotNull(writtenFile.PhysicalPath);
+        Assert.AreEqual(file.Id, writtenFile.Id);
+        Assert.AreEqual(expectedPath, writtenFile.PhysicalPath);
     }
 }
