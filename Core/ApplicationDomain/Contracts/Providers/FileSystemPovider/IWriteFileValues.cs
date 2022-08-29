@@ -8,6 +8,9 @@ public class IWriteFileValues
     public Stream Content { get; set; } = default!;
 
     [Required]
+    public string FilePath { get; set; } = default!;
+
+    [Required]
     public string FileName { get; set; } = default!;
 
     [Required]

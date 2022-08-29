@@ -11,7 +11,7 @@ public class MockFileSystemProvider : IFileSystemProvider
 
     public async Task<string> WriteAsync(IWriteFileValues fileValues)
     {
-        var filepath = fileValues.FileName + fileValues.Extension;
+        var filepath = $"{fileValues.FilePath}/{fileValues.FileName + fileValues.Extension}";
 
         await Task.Delay(1);
 

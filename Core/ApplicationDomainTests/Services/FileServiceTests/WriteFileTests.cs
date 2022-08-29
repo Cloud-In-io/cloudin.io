@@ -39,7 +39,7 @@ public partial class FileServiceTests
 
         var writtenFile = await fileService.WriteFileContentAsync(fileContentPayload);
 
-        var expectedPath = $"{file.Id}/file.png";
+        var expectedPath = $"{_user.Id}/{file.Id}/file.png";
 
         Assert.IsNotNull(writtenFile);
         Assert.IsNotNull(writtenFile.PhysicalPath);
