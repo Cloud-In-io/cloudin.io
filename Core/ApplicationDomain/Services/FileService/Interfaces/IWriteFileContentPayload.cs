@@ -7,6 +7,9 @@ namespace CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
 public class IWriteFileContentPayload
 {
     [Required]
+    public Guid OwnerUserId { get; set; }
+
+    [Required]
     public Guid FileId { get; set; } = default!;
 
     [Required]

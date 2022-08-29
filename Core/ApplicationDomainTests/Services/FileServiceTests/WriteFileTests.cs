@@ -34,7 +34,8 @@ public partial class FileServiceTests
             {
                 FileId = file.Id,
                 Content = Stream.Null,
-                MimeType = "image/png"
+                MimeType = "image/png",
+                OwnerUserId = _user.Id,
             };
 
         var writtenFile = await fileService.WriteFileContentAsync(fileContentPayload);
@@ -43,7 +44,7 @@ public partial class FileServiceTests
 
         Assert.IsNotNull(writtenFile);
         Assert.IsNotNull(writtenFile.PhysicalPath);
-        Assert.AreEqual(file.Id, writtenFile.Id);
+        Assert.AreEqual(file, writtenFile);
         Assert.AreEqual(expectedPath, writtenFile.PhysicalPath);
     }
 }

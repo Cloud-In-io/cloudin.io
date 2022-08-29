@@ -4,6 +4,7 @@ using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 using CloudIn.Core.ApplicationDomain.Contracts.Providers.FileSystemProvider;
 using CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using MimeTypes;
 
 namespace CloudIn.Core.ApplicationDomain.Services.FileService;
 
@@ -68,8 +69,44 @@ public class FileService : IFileService
         return file;
     }
 
-    public Task<FileEntity> WriteFileContentAsync(IWriteFileContentPayload fileContentPayload)
+    public async Task<FileEntity> WriteFileContentAsync(IWriteFileContentPayload fileContentPayload)
     {
-        throw new NotImplementedException();
+        var ownerUser = await _userRepository.GetByIdAsync(fileContentPayload.OwnerUserId);
+        if (ownerUser == null)
+        {
+            throw new Exception("Owner user not found or not exists");
+        }
+
+        var file = await _fileRepository.GetByIdAsync(fileContentPayload.FileId);
+
+        if (file == null)
+        {
+            throw new Exception("File registry not found or not exists");
+        }
+
+        var fileExtension = MimeTypeMap.GetExtension(fileContentPayload.MimeType);
+
+        IWriteFileValues writeFileValues =
+            new()
+            {
+                Extension = fileExtension,
+                FileName = file.Id.ToString(),
+                FilePath = ownerUser.Id.ToString(),
+                Content = fileContentPayload.Content,
+            };
+
+        var physicalPath = await _fileSystemProvider.WriteAsync(writeFileValues);
+
+        file.PhysicalPath = physicalPath;
+        file.MimeType = fileContentPayload.MimeType;
+
+        var wasFileSaved = await _fileRepository.SaveChangesAsync();
+
+        if (!wasFileSaved)
+        {
+            throw new Exception("Could not save this file");
+        }
+
+        return file;
     }
 }
