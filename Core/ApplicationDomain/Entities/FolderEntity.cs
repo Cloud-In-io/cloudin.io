@@ -1,6 +1,6 @@
 namespace CloudIn.Core.ApplicationDomain.Entities;
 
-public class FolderEntity
+public class FolderEntity : IBaseEntity
 {
     public FolderEntity()
     {
@@ -8,7 +8,7 @@ public class FolderEntity
         Folders = new HashSet<FolderEntity>();
     }
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public new Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid OwnerUserId { get; protected set; } = default!;
 

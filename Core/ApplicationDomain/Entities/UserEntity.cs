@@ -1,8 +1,8 @@
 namespace CloudIn.Core.ApplicationDomain.Entities;
 
-public class UserEntity
+public class UserEntity : IBaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public new Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid RootFolderId { get; protected set; }
 

@@ -1,8 +1,8 @@
 namespace CloudIn.Core.ApplicationDomain.Entities;
 
-public class FileEntity
+public class FileEntity : IBaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public new Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid OwnerUserId { get; set; } = default!;
 
