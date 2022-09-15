@@ -34,6 +34,8 @@ bld/
 
 roadmap.md
 
+.docker/
+
 # Visual Studio Code cache/options directory
 .vscode/
 
