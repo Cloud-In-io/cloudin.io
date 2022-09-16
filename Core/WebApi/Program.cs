@@ -1,6 +1,9 @@
-using CloudIn.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using CloudIn.Core.Data;
+using CloudIn.Core.Data.Repositories;
+using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
+using CloudIn.Core.ApplicationDomain.Services.UserService;
+using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,13 @@ builder.Services.AddDbContext<DataContext>(
             b => b.MigrationsAssembly("WebApi")
         )
 );
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IFolderRepository, FolderRepository>();
 
 
 var app = builder.Build();
