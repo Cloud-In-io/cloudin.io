@@ -15,4 +15,17 @@ public class FolderResolver
 
         return userRepository.GetAll().AsQueryable().Where(user => user.Id == parent.OwnerUserId);
     }
+
+    public IEnumerable<FolderEntity> GetParentFolder(
+        IResolverContext context,
+        [Service] IFolderRepository folderRepository
+    )
+    {
+        var parent = context.Parent<FolderEntity>();
+
+        return folderRepository
+            .GetAll()
+            .AsQueryable()
+            .Where(folder => folder.Id == parent.ParentFolderId);
+    }
 }

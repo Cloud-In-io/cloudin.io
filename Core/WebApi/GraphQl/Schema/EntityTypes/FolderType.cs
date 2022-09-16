@@ -9,11 +9,18 @@ public class FolderType : ObjectType<FolderEntity>
     {
         typeDesc.Name("Folder");
         typeDesc.Field(folder => folder.OwnerUserId).IsProjected();
+        typeDesc.Field(folder => folder.ParentFolderId).IsProjected();
 
         typeDesc
             .Field("OwnerUser")
             .UseFirstOrDefault()
             .UseProjection()
             .ResolveWith<FolderResolver>(res => res.GetOwnerUser(default!, default!));
+
+        typeDesc
+            .Field("ParentFolder")
+            .UseFirstOrDefault()
+            .UseProjection()
+            .ResolveWith<FolderResolver>(res => res.GetParentFolder(default!, default!));
     }
 }
