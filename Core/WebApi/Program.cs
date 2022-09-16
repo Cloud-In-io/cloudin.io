@@ -29,6 +29,7 @@ builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<DataContext>()
     .AddType<UserType>()
+    .AddType<FolderType>()
     .AddQueryType<UserQuery>()
     .AddProjections();
 
