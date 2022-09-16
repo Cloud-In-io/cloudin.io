@@ -5,6 +5,7 @@ using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 using CloudIn.Core.ApplicationDomain.Services.UserService;
 using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
+using CloudIn.Core.WebApi.GraphQl.Schema.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services
 builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<DataContext>()
+    .AddQueryType<UserQuery>()
     .AddProjections();
 
 var app = builder.Build();
