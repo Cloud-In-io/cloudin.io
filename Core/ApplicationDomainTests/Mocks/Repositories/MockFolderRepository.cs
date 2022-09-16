@@ -14,11 +14,16 @@ public class MockFolderRepository : IFolderRepository
         return Task.CompletedTask;
     }
 
+    public IEnumerable<FolderEntity> GetAll()
+    {
+        return Folders;
+    }
+
     public async Task<IEnumerable<FolderEntity>> GetAllAsync()
     {
         await Task.Delay(1);
 
-        return Folders;
+        return GetAll();
     }
 
     public async Task<FolderEntity?> GetByIdAsync(Guid Id)

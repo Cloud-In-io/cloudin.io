@@ -14,11 +14,16 @@ public class MockUserRepository : IUserRepository
         return Task.CompletedTask;
     }
 
+    public IEnumerable<UserEntity> GetAll()
+    {
+        return Users;
+    }
+
     public async Task<IEnumerable<UserEntity>> GetAllAsync()
     {
         await Task.Delay(1);
 
-        return Users;
+        return GetAll();
     }
 
     public async Task<UserEntity?> GetByIdAsync(Guid Id)

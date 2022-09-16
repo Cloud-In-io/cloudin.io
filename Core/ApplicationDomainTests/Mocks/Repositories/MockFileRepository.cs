@@ -14,11 +14,16 @@ public class MockFileRepository : IFileRepository
         return Task.CompletedTask;
     }
 
+    public IEnumerable<FileEntity> GetAll()
+    {
+        return Files;
+    }
+
     public async Task<IEnumerable<FileEntity>> GetAllAsync()
     {
         await Task.Delay(1);
 
-        return Files;
+        return GetAll();
     }
 
     public async Task<FileEntity?> GetByIdAsync(Guid Id)

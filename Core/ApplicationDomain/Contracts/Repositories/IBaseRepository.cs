@@ -8,6 +8,8 @@ public interface IBaseRepository<T>
 
     Task<IEnumerable<T>> GetAllAsync();
 
+    IEnumerable<T> GetAll();
+
     Task RemoveAsync(T entity);
 
     Task<bool> SaveChangesAsync();

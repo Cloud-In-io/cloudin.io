@@ -6,7 +6,7 @@ namespace CloudIn.Core.Data.Repositories;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : IBaseEntity, new()
 {
-    private readonly DataContext _context;
+    protected readonly DataContext _context;
 
     public BaseRepository(DataContext context)
     {
@@ -16,6 +16,13 @@ public class BaseRepository<T> : IBaseRepository<T> where T : IBaseEntity, new()
     public async Task AddAsync(T entity)
     {
         await _context.AddAsync(entity);
+    }
+
+    public IEnumerable<T> GetAll()
+    {
+        var allEntities = _context.Set<T>();
+
+        return allEntities;
     }
 
     public async Task<IEnumerable<T>> GetAllAsync()
