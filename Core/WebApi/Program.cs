@@ -6,7 +6,6 @@ using CloudIn.Core.ApplicationDomain.Services.UserService;
 using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
 using CloudIn.Core.WebApi.GraphQl.Schema;
-using CloudIn.Core.WebApi.GraphQl.Schema.EntityTypes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +28,8 @@ builder.Services
 builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<DataContext>()
+    .AddTypes()
     .AddQueries()
-    .AddType<UserType>()
-    .AddType<FileType>()
-    .AddType<FolderType>()
     .AddProjections();
 
 var app = builder.Build();
