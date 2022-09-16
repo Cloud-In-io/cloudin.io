@@ -15,6 +15,6 @@ public class UserType : ObjectType<UserEntity>
             .Field("RootFolder")
             .UseFirstOrDefault()
             .UseProjection()
-            .ResolveWith<UserResolver>((res) => res.GetRootFolder(default!, default!));
+            .ResolveWith<UserResolver>(res => res.GetRootFolder(default!, default!));
     }
 }
