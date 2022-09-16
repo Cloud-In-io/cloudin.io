@@ -23,10 +23,15 @@ builder.Services
     .AddScoped<IUserRepository, UserRepository>()
     .AddScoped<IFolderRepository, FolderRepository>();
 
+builder.Services
+    .AddGraphQLServer()
+    .RegisterDbContext<DataContext>()
+    .AddProjections();
 
 var app = builder.Build();
 
 await app.ApplyMigrationsAsync<DataContext>();
 
+app.MapGraphQL();
 
 app.Run();
