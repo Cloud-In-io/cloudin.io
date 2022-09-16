@@ -95,7 +95,7 @@ namespace CloudIn.Core.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RootFolderId")
+                    b.Property<Guid?>("RootFolderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -104,7 +104,8 @@ namespace CloudIn.Core.WebApi.Migrations
                         .IsUnique();
 
                     b.HasIndex("RootFolderId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[RootFolderId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -145,8 +146,7 @@ namespace CloudIn.Core.WebApi.Migrations
                     b.HasOne("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", null)
                         .WithOne()
                         .HasForeignKey("CloudIn.Core.ApplicationDomain.Entities.UserEntity", "RootFolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.OwnsOne("CloudIn.Core.ApplicationDomain.Entities.UserName", "Name", b1 =>
                         {

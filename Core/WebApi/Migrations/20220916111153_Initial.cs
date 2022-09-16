@@ -50,7 +50,7 @@ namespace CloudIn.Core.WebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RootFolderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RootFolderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name_FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name_LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -63,8 +63,7 @@ namespace CloudIn.Core.WebApi.Migrations
                         name: "FK_Users_Folders_RootFolderId",
                         column: x => x.RootFolderId,
                         principalTable: "Folders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -97,7 +96,8 @@ namespace CloudIn.Core.WebApi.Migrations
                 name: "IX_Users_RootFolderId",
                 table: "Users",
                 column: "RootFolderId",
-                unique: true);
+                unique: true,
+                filter: "[RootFolderId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Files_Folders_ParentFolderId",
