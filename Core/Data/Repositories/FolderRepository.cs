@@ -3,7 +3,7 @@ using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 
 namespace CloudIn.Core.Data.Repositories;
 
-public class FileRepository : BaseRepository<FileEntity>, IFileRepository
+public class FolderRepository : BaseRepository<FolderEntity>, IFolderRepository
 {
-    public FileRepository(DataContext context) : base(context) { }
+    public FolderRepository(DataContext context) : base(context) { }
 }
