@@ -4,11 +4,11 @@ using CloudIn.Core.ApplicationDomain.Entities;
 namespace CloudIn.Core.WebApi.GraphQl.Schema.Queries;
 
 [ExtendObjectType(typeof(BaseQuery))]
-public class UserQuery
+public class FolderQuery
 {
     [UseProjection]
-    public IEnumerable<UserEntity> GetUsers([Service] IUserRepository userRepository)
+    public IEnumerable<FolderEntity> GetFolders([Service] IFolderRepository folderRepository)
     {
-        return userRepository.GetAll().AsQueryable();
+        return folderRepository.GetAll().AsQueryable();
     }
 }
