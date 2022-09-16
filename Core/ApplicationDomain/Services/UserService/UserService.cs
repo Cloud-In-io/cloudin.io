@@ -47,15 +47,15 @@ public class UserService : IUserService
         var user = _mapper.Map<UserEntity>(createUserPayload);
         user.Password = createUserPayload.Password; // Should Encrypt here
 
-        var folder = new FolderEntity();
-
-        folder.SetAsRootFolder(user);
-        user.SetRootFolder(folder);
-
         await _userRepository.AddAsync(user);
+        var wasUserSaved = await _userRepository.SaveChangesAsync();
+
+        var folder = new FolderEntity();
         await _folderRepository.AddAsync(folder);
 
-        var wasUserSaved = await _userRepository.SaveChangesAsync();
+        user.SetRootFolder(folder);
+        folder.SetAsRootFolder(user);
+
         var wasFolderSaved = await _folderRepository.SaveChangesAsync();
 
         if (!wasUserSaved || !wasFolderSaved)

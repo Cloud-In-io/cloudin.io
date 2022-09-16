@@ -26,10 +26,17 @@ public partial class UserServiceTests
 
         var user = await _userService.CreateUserAsync(createUserPayload);
 
+        var rootFolder = folderRepository.Folders.FirstOrDefault();
+
         Assert.IsNotNull(user);
+        Assert.IsNotNull(rootFolder);
         Assert.IsInstanceOfType(user, typeof(UserEntity));
-        Assert.AreNotEqual(Guid.Empty, user.RootFolderId);
+
         Assert.AreEqual(createUserPayload.Email, user.Email);
+        Assert.AreEqual(rootFolder.Id, user.RootFolderId);
+
+        Assert.AreNotEqual(Guid.Empty, user.Id);
+        Assert.AreNotEqual(Guid.Empty, user.RootFolderId);
 
         Assert.AreEqual(1, userRepository.Users.Count);
         Assert.AreEqual(1, folderRepository.Folders.Count);

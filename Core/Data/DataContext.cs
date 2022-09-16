@@ -23,7 +23,9 @@ public class DataContext : DbContext
             .Entity<UserEntity>()
             .HasOne<FolderEntity>()
             .WithOne()
-            .HasForeignKey<UserEntity>(user => user.RootFolderId);
+            .OnDelete(DeleteBehavior.NoAction)
+            .HasForeignKey<UserEntity>(user => user.RootFolderId)
+            .IsRequired(required: false);
 
         modelBuilder
             .Entity<FolderEntity>()
@@ -38,7 +40,8 @@ public class DataContext : DbContext
             .HasOne<FolderEntity>()
             .WithMany(f => f.Folders)
             .OnDelete(DeleteBehavior.NoAction)
-            .HasForeignKey(folder => folder.ParentFolderId);
+            .HasForeignKey(folder => folder.ParentFolderId)
+            .IsRequired(required: false);
 
         modelBuilder
             .Entity<FileEntity>()

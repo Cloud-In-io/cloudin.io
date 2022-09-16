@@ -4,7 +4,7 @@ public class UserEntity : IBaseEntity
 {
     public new Guid Id { get; set; } = Guid.NewGuid();
 
-    public Guid RootFolderId { get; protected set; }
+    public Guid? RootFolderId { get; protected set; }
 
     public string Email { get; set; } = default!;
 

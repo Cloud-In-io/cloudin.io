@@ -49,7 +49,7 @@ public partial class FileServiceTests
                 new()
                 {
                     OwnerUserId = _user.Id,
-                    ParentFolderId = _user.RootFolderId,
+                    ParentFolderId = _user.RootFolderId ?? Guid.Empty,
                     Name = "Documents"
                 }
             )
