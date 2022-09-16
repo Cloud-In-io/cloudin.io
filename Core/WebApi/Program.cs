@@ -23,12 +23,14 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services
     .AddScoped<IUserService, UserService>()
     .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IFileRepository, FileRepository>()
     .AddScoped<IFolderRepository, FolderRepository>();
 
 builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<DataContext>()
     .AddType<UserType>()
+    .AddType<FileType>()
     .AddType<FolderType>()
     .AddQueryType<UserQuery>()
     .AddProjections();
