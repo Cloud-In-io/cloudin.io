@@ -4,10 +4,36 @@ services:
   database:
     image: mcr.microsoft.com/azure-sql-edge
     container_name: databaseSQL
+    cap_add: [ 'SYS_PTRACE' ]
     environment:
       ACCEPT_EULA: "Y"
-      sa_password: "P@55w0rd123"
+      MSSQL_SA_PASSWORD: "P@55w0rd123"
     ports:
       - "1433:1433"
     volumes:
       - ./.docker/:/var/opt/mssql/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/opt/mssql-tools/bin/sqlcmd",
+          "-U",
+          "sa",
+          "-P",
+          "P@55w0rd123",
+          "-Q",
+          "select 1"
+        ]
+      interval: 1s
+      retries: 5
+
+  app:
+    container_name: "app"
+    build: .
+    ports:
+      - "3333:80"
+    environment:
+      ConnectionStrings:DefaultConnection: "Server=database;Initial Catalog=CloudIn;User Id=sa;Password=P@55w0rd123;"
+    depends_on:
+      database:
+        condition: service_healthy
