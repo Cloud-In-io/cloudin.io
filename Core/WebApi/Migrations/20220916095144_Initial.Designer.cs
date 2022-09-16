@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CloudIn.Core.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220915152511_Initial")]
+    [Migration("20220916095144_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,7 +116,7 @@ namespace CloudIn.Core.WebApi.Migrations
                     b.HasOne("CloudIn.Core.ApplicationDomain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", "ParentFolder")
@@ -133,13 +133,13 @@ namespace CloudIn.Core.WebApi.Migrations
                     b.HasOne("CloudIn.Core.ApplicationDomain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", null)
                         .WithMany("Folders")
                         .HasForeignKey("ParentFolderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.UserEntity", b =>
