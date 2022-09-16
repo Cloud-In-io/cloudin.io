@@ -34,6 +34,7 @@ public partial class UserServiceTests
 
         Assert.AreEqual(createUserPayload.Email, user.Email);
         Assert.AreEqual(rootFolder.Id, user.RootFolderId);
+        Assert.AreEqual(rootFolder.Name, $"Root:{user.Id}");
 
         Assert.AreNotEqual(Guid.Empty, user.Id);
         Assert.AreNotEqual(Guid.Empty, user.RootFolderId);

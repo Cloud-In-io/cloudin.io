@@ -27,6 +27,7 @@ public class FolderEntity : IBaseEntity
         OwnerUserId = ownerUser.Id;
         ParentFolderId = null;
         IsRootFolder = true;
+        Name = $"Root:{ownerUser.Id}";
     }
 
     public void SetAsChildFolder(FolderEntity parentFolder, UserEntity ownerUser)
