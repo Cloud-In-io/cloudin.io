@@ -9,7 +9,7 @@ using CloudIn.Core.WebApi.GraphQl.Schema;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DataContext>(
+builder.Services.AddPooledDbContextFactory<DataContext>(
     opt =>
         opt.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -21,13 +21,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services
     .AddScoped<IUserService, UserService>()
-    .AddScoped<IUserRepository, UserRepository>()
-    .AddScoped<IFileRepository, FileRepository>()
-    .AddScoped<IFolderRepository, FolderRepository>();
+    .AddWithPooledDbContext<IUserRepository, UserRepository>()
+    .AddWithPooledDbContext<IFileRepository, FileRepository>()
+    .AddWithPooledDbContext<IFolderRepository, FolderRepository>();
 
 builder.Services
     .AddGraphQLServer()
-    .RegisterDbContext<DataContext>()
+    .RegisterDbContext<DataContext>(DbContextKind.Pooled)
     .AddTypes()
     .AddQueries()
     .AddProjections();
