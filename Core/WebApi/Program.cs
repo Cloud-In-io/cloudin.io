@@ -4,6 +4,8 @@ using CloudIn.Core.Data.Repositories;
 using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 using CloudIn.Core.ApplicationDomain.Services.UserService;
 using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
+using CloudIn.Core.ApplicationDomain.Services.FolderService;
+using CloudIn.Core.ApplicationDomain.Services.FolderService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
 using CloudIn.Core.WebApi.GraphQl.Schema;
 
@@ -21,6 +23,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services
     .AddScoped<IUserService, UserService>()
+    .AddScoped<IFolderService, FolderService>()
     .AddWithPooledDbContext<IUserRepository, UserRepository>()
     .AddWithPooledDbContext<IFileRepository, FileRepository>()
     .AddWithPooledDbContext<IFolderRepository, FolderRepository>();
@@ -33,7 +36,8 @@ builder.Services
     .AddMutations()
     .AddSorting()
     .AddFiltering()
-    .AddProjections();
+    .AddProjections()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 
