@@ -36,6 +36,7 @@ roadmap.md
 
 dist/
 .docker/
+**/appsettings*.json
 
 # Visual Studio Code cache/options directory
 .vscode/
