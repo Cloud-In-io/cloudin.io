@@ -5,5 +5,7 @@ namespace CloudIn.Core.Data.Repositories;
 
 public class FileRepository : BaseRepository<FileEntity>, IFileRepository
 {
-    public FileRepository(DataContext context) : base(context) { }
+    public FileRepository(DataContext dbContext) : base(dbContext) { }
+
+    public ValueTask DisposeAsync() => _context.DisposeAsync();
 }

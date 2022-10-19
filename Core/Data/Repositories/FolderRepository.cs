@@ -3,7 +3,9 @@ using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 
 namespace CloudIn.Core.Data.Repositories;
 
-public class FolderRepository : BaseRepository<FolderEntity>, IFolderRepository
+public class FolderRepository : BaseRepository<FolderEntity>, IFolderRepository, IAsyncDisposable
 {
-    public FolderRepository(DataContext context) : base(context) { }
+    public FolderRepository(DataContext dbContext) : base(dbContext) { }
+
+    public ValueTask DisposeAsync() => _context.DisposeAsync();
 }

@@ -4,9 +4,9 @@ using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
 
 namespace CloudIn.Core.Data.Repositories;
 
-public class UserRepository : BaseRepository<UserEntity>, IUserRepository
+public class UserRepository : BaseRepository<UserEntity>, IUserRepository, IAsyncDisposable
 {
-    public UserRepository(DataContext context) : base(context) { }
+    public UserRepository(DataContext dbContext) : base(dbContext) { }
 
     public async Task<UserEntity?> GetUserByEmailAsync(string emailAddress)
     {
@@ -14,4 +14,6 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
 
         return result;
     }
+
+    public ValueTask DisposeAsync() => _context.DisposeAsync();
 }
