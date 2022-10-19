@@ -30,6 +30,8 @@ builder.Services
     .RegisterDbContext<DataContext>(DbContextKind.Pooled)
     .AddTypes()
     .AddQueries()
+    .AddSorting()
+    .AddFiltering()
     .AddProjections();
 
 var app = builder.Build();
