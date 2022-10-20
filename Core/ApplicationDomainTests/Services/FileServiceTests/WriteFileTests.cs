@@ -1,3 +1,4 @@
+using CloudIn.Core.ApplicationDomain.Entities;
 using CloudIn.Core.ApplicationDomain.Services.FileService;
 using CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
 using CloudIn.Core.ApplicationDomainTests.Mocks.Repositories;
@@ -8,7 +9,7 @@ public partial class FileServiceTests
 {
     [TestMethod]
     public async Task Should_Write_A_File()
-    {
+    {       
         var fileRepository = new MockFileRepository();
         var fileSystemProvider = new MockFileSystemProvider();
         var fileService = new FileService(
@@ -19,32 +20,28 @@ public partial class FileServiceTests
             _userRepository
         );
 
-        ICreateFilePayload filePayload =
+        IWriteFilePayload filePayload =
             new()
             {
                 Name = "Cat",
                 OwnerUserId = _user.Id,
                 ParentFolderId = _folder.Id,
-            };
-
-        var file = await fileService.CreateFileAsync(filePayload);
-
-        IWriteFileContentPayload fileContentPayload =
-            new()
-            {
-                FileId = file.Id,
                 Content = Stream.Null,
                 MimeType = "image/png",
-                OwnerUserId = _user.Id,
             };
 
-        var writtenFile = await fileService.WriteFileContentAsync(fileContentPayload);
+        var writtenFile = await fileService.WriteFileAsync(filePayload);
 
-        var expectedPath = $"{_user.Id}/{file.Id}/file.png";
+        var expectedPath = $"{_user.Id}/{writtenFile.Id}/file.png";
 
+        Assert.IsInstanceOfType(writtenFile, typeof(FileEntity));
         Assert.IsNotNull(writtenFile);
         Assert.IsNotNull(writtenFile.PhysicalPath);
-        Assert.AreEqual(file, writtenFile);
         Assert.AreEqual(expectedPath, writtenFile.PhysicalPath);
+        Assert.AreEqual(filePayload.Name, writtenFile.Name);
+        Assert.AreEqual(filePayload.OwnerUserId, writtenFile.OwnerUserId);
+        Assert.AreEqual(1, _folder.Files.Count);
+        Assert.AreEqual(1, fileRepository.Files.Count);
+        Assert.AreSame(_folder, writtenFile.ParentFolder);
     }
 }

@@ -4,7 +4,7 @@ using CloudIn.Core.ApplicationDomain.Entities;
 
 namespace CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
 
-public class ICreateFilePayload
+public class IWriteFilePayload
 {
     [Required]
     public Guid OwnerUserId { get; set; }
@@ -14,13 +14,20 @@ public class ICreateFilePayload
 
     [Required]
     public string Name { get; set; } = default!;
+
+    [Required]
+    public Stream Content { get; set; } = default!;
+
+    [Required]
+    public string MimeType { get; set; } = default!;
 }
 
-public class ICreateFilePayloadMapper : Profile
+public class IWriteFilePayloadMapper : Profile
 {
     //Source -> Target
-    public ICreateFilePayloadMapper()
+    public IWriteFilePayloadMapper()
     {
-        CreateMap<ICreateFilePayload, FileEntity>().IgnoreAllPropertiesWithAnInaccessibleSetter();
+        CreateMap<IWriteFilePayload, FileEntity>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter();
     }
 }
