@@ -8,16 +8,22 @@ using CloudIn.Core.ApplicationDomain.Services.FolderService;
 using CloudIn.Core.ApplicationDomain.Services.FolderService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
 using CloudIn.Core.WebApi.GraphQl.Schema;
+using CloudIn.Core.WebApi.Common.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddPooledDbContextFactory<DataContext>(
-    opt =>
-        opt.UseSqlServer(
-            builder.Configuration.GetConnectionString("DefaultConnection"),
-            b => b.MigrationsAssembly("WebApi")
-        )
-);
+builder.Services
+    .AddHttpContextAccessor()
+    .AddPooledDbContextFactory<DataContext>(
+        opt =>
+            opt.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly("WebApi")
+            )
+    );
+
+// configure strongly typed settings object
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Settings"));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

@@ -15,7 +15,11 @@ public static class SchemaExtensions
             .AddTypeExtension<FolderQuery>();
 
     public static IRequestExecutorBuilder AddMutations(this IRequestExecutorBuilder builder) =>
-        builder.AddMutationType<BaseMutation>().AddTypeExtension<UserMutation>().AddTypeExtension<FolderMutation>();
+        builder
+            .AddMutationType<BaseMutation>()
+            .AddTypeExtension<UserMutation>()
+            .AddTypeExtension<FolderMutation>()
+            .AddTypeExtension<FileMutation>();
 
     public static IRequestExecutorBuilder AddTypes(this IRequestExecutorBuilder builder) =>
         builder.AddType<UserType>().AddType<FileType>().AddType<FolderType>();
