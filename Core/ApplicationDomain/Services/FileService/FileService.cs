@@ -65,11 +65,10 @@ public class FileService : IFileService
         var physicalPath = await _fileSystemProvider.WriteAsync(writeFileValues);
 
         file.PhysicalPath = physicalPath;
+        await _fileRepository.AddAsync(file);
 
         file.MoveToFolder(parentFolder);
         parentFolder.AddFile(file);
-
-        await _fileRepository.AddAsync(file);
 
         var wasFileSaved = await _fileRepository.SaveChangesAsync();
 

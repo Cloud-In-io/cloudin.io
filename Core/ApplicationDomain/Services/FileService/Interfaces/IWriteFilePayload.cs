@@ -28,6 +28,8 @@ public class IWriteFilePayloadMapper : Profile
     public IWriteFilePayloadMapper()
     {
         CreateMap<IWriteFilePayload, FileEntity>()
+            .ForSourceMember(src => src.ParentFolderId, opt => opt.DoNotValidate())
+            .ForSourceMember(src => src.Content, opt => opt.DoNotValidate())
             .IgnoreAllPropertiesWithAnInaccessibleSetter();
     }
 }
