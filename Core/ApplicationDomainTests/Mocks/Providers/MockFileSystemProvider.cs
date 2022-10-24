@@ -1,6 +1,6 @@
 using CloudIn.Core.ApplicationDomain.Contracts.Providers.FileSystemProvider;
 
-namespace CloudIn.Core.ApplicationDomainTests.Mocks.Repositories;
+namespace CloudIn.Core.ApplicationDomainTests.Mocks.Providers;
 
 public class MockFileSystemProvider : IFileSystemProvider
 {

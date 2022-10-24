@@ -1,6 +1,7 @@
 using CloudIn.Core.ApplicationDomain.Entities;
 using CloudIn.Core.ApplicationDomain.Services.FileService;
 using CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
+using CloudIn.Core.ApplicationDomainTests.Mocks.Providers;
 using CloudIn.Core.ApplicationDomainTests.Mocks.Repositories;
 
 namespace CloudIn.Core.ApplicationDomainTests.Services;
