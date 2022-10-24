@@ -13,7 +13,8 @@ using CloudIn.Core.WebApi.Common.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddHttpContextAccessor()
+    .AddHttpContextAccessor()    
+    .Configure<AppSettings>(builder.Configuration.GetSection("Settings"))
     .AddPooledDbContextFactory<DataContext>(
         opt =>
             opt.UseSqlServer(
@@ -28,6 +29,7 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Settin
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services
+    .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddScoped<IUserService, UserService>()
     .AddScoped<IFolderService, FolderService>()
     .AddWithPooledDbContext<IUserRepository, UserRepository>()

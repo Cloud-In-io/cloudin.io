@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CloudIn.Core.WebApi.GraphQl.Schema.InputTypes;
+namespace CloudIn.Core.WebApi.Common.Contracts;
 
-public class IPresignedUpload
+public class IUploadPayload
 {
     [Required]
     public Guid UserId { get; set; }
