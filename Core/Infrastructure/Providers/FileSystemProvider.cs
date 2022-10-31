@@ -49,5 +49,22 @@ public class FileSystemProvider : IFileSystemProvider, IAsyncDisposable
         return fileInfo.FullName;
     }
 
-    ValueTask IAsyncDisposable.DisposeAsync() => FileStream.DisposeAsync();
+    public async Task<FileStream> OpenReadAsync(string fileName)
+    {
+        await Task.Yield();
+        
+        var fileInfo = new FileInfo(fileName);
+
+        if(!fileInfo.Exists) throw new FileNotFoundException();
+
+        FileStream = fileInfo.OpenRead();
+
+        return FileStream;
+    }
+
+    ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        Console.WriteLine("Dispose");
+        return FileStream.DisposeAsync();
+    }
 }

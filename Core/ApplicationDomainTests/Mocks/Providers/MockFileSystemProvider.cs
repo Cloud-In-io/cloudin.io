@@ -4,6 +4,11 @@ namespace CloudIn.Core.ApplicationDomainTests.Mocks.Providers;
 
 public class MockFileSystemProvider : IFileSystemProvider
 {
+    public Task<FileStream?> OpenReadAsync(string filePath)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task RemoveAsync(string filepath)
     {
         return Task.CompletedTask;
