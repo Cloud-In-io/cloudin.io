@@ -8,8 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../ApplicationDomain/ApplicationDomain.csproj" />
     <ProjectReference Include="../Data/Data.csproj" />
+    <ProjectReference Include="../ApplicationDomain/ApplicationDomain.csproj" />
+    <ProjectReference Include="../Infrastructure/Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

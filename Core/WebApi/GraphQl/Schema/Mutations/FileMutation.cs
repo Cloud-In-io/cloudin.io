@@ -18,7 +18,7 @@ public class FileMutation
     )
     {
         var settings = settingsProvider.Value;
-        var endpoint = httpContextAccessor?.HttpContext?.Request.Host.ToUriComponent() + "/upload";
+        var endpoint = "/api/upload";
 
         /* Do some validation */
 

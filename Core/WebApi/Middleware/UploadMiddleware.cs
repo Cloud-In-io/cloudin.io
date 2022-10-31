@@ -16,7 +16,7 @@ namespace CloudIn.Core.WebApi.Middleware;
 
 public static class UploadMiddleware
 {
-    public static IApplicationBuilder MapUploadEndpoint(this IApplicationBuilder app, string path = "/upload", string storePath = @"./tmp/uploads/") =>
+    public static IApplicationBuilder MapUploadEndpoint(this IApplicationBuilder app, string path = "/api/upload", string storePath = @"./tmp/uploads/") =>
         app.UseTus(httpContext => new DefaultTusConfiguration
         {
             UrlPath = path,
