@@ -6,6 +6,7 @@ using tusdotnet.Stores;
 using tusdotnet.Interfaces;
 using tusdotnet.Models.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using CloudIn.Core.WebApi.Common.Helpers;
 using CloudIn.Core.WebApi.Common.Settings;
 using CloudIn.Core.WebApi.Common.Contracts;
@@ -24,21 +25,45 @@ public static class UploadMiddleware
             {
                 OnBeforeCreateAsync = (ctx) => 
                 {
-                    if (!ctx.HttpContext.Request.Headers.ContainsKey("Upload-Token"))
+                    try
                     {
-                        ctx.FailRequest("Upload-Token header was not provide or is invalid");
+                        var settings = httpContext.RequestServices.GetRequiredService<IOptions<AppSettings>>().Value;
+
+                        if(!ctx.HttpContext.Request.Query.TryGetValue("token", out var token)) 
+                            throw new ArgumentException("the token parameter was not provide or is invalid.");
+                        
+                        TokenHelper.ValidateToken<IUploadPayload>(token.ToString(), secret: settings.UploadJWTSecret);
+
+                        if (!ctx.Metadata.ContainsKey("name")) 
+                            throw new ArgumentException("name metadata must be specified.");
+
+                        if (!ctx.Metadata.ContainsKey("contentType")) 
+                            throw new ArgumentException("contentType metadata must be specified.");
+                    }
+                    catch (System.ArgumentException e)
+                    {
+                        ctx.FailRequest(HttpStatusCode.BadRequest, e.Message);
+                        //throw;
+                    }
+                    catch(System.Exception)
+                    { 
+                        ctx.FailRequest(HttpStatusCode.BadRequest, "invalid operation.");
+                        //throw;
                     }
 
-                    if (!ctx.Metadata.ContainsKey("name"))
-                    {
-                        ctx.FailRequest("name metadata must be specified.");
-                    }
+                    return Task.CompletedTask;
+                },
+                OnCreateCompleteAsync = (ctx) =>
+                {
+                    var queryParams = ctx.HttpContext.Request.QueryString.ToString();
+                    var locationUri = new StringValues($"{path}/{ctx.FileId}{queryParams}");
 
-                    if (!ctx.Metadata.ContainsKey("contentType"))
+                    ctx.HttpContext.Response.OnStarting(() => 
                     {
-                        ctx.FailRequest("contentType metadata must be specified.");
-                    }
-                    
+                        ctx.HttpContext.Response.Headers.Location = locationUri;
+                        return Task.CompletedTask;
+                    });
+
                     return Task.CompletedTask;
                 },
                 OnFileCompleteAsync = async (ctx) =>
@@ -46,10 +71,13 @@ public static class UploadMiddleware
                     var settings = httpContext.RequestServices.GetRequiredService<IOptions<AppSettings>>().Value;
                     var fileService = httpContext.RequestServices.GetRequiredService<IFileService>();
 
-                    if(!ctx.HttpContext.Request.Headers.TryGetValue("Upload-Token", out var token))
+                    var hasToken = ctx.HttpContext.Request.Query.TryGetValue("token", out var token);
+                    var payload = TokenHelper.ValidateToken<IUploadPayload>(token.ToString(), secret: settings.UploadJWTSecret);
+
+                    if(!hasToken || payload == null)
                     {
                         throw new HttpRequestException(
-                            message: "Upload-Token header was not provide or is invalid", 
+                            message: "token parameter was not provide or is invalid", 
                             statusCode: HttpStatusCode.Unauthorized, 
                             inner: null
                         );
@@ -57,16 +85,6 @@ public static class UploadMiddleware
 
                     var file = await ctx.GetFileAsync();
                     var metadata = await file.GetMetadataAsync(ctx.CancellationToken);
-                    var payload = TokenHelper.ValidateToken<IUploadPayload>(token.ToString(), secret: settings.UploadJWTSecret);
-
-                    if(payload == null)
-                    {
-                        throw new HttpRequestException(
-                            message: "Upload data payload is invalid", 
-                            statusCode: HttpStatusCode.BadRequest, 
-                            inner: null
-                        );
-                    }
 
                     using(var content = await file.GetContentAsync(ctx.CancellationToken))
                     {
