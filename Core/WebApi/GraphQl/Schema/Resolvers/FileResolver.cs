@@ -15,4 +15,11 @@ public class FileResolver
 
         return userRepository.GetAll().AsQueryable().Where(user => user.Id == parent.OwnerUserId);
     }
+
+    public string? GetMediaUrl(IResolverContext context, [Service] LinkGenerator linker)
+    {
+        var parent = context.Parent<FileEntity>();
+
+        return linker.GetPathByName("download", values: new { FileId = parent.Id });
+    }
 }
