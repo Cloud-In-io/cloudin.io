@@ -1,0 +1,11 @@
+{
+  "Settings": {
+    "AuthenticationJWTSecret": "",
+    "AuthenticationExpirationSeconds": 28800,
+    "UploadJWTSecret": "",
+    "UploadExpirationSeconds": 604800
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": ""
+  }
+}
