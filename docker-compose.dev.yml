@@ -7,10 +7,10 @@ services:
     container_name: databaseSQL
     cap_add: [ 'SYS_PTRACE' ]
     environment:
-      ACCEPT_EULA: "Y"
+      ACCEPT_EULA: "1"
       MSSQL_SA_PASSWORD: "P@55w0rd123"
     ports:
-      - "1433:1433"
+      - "5431:1431"
     volumes:
       - ./.docker/:/var/opt/mssql/data
     healthcheck:
@@ -30,9 +30,13 @@ services:
 
   app:
     container_name: "app"
-    build: .
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.dev
     ports:
-      - "3333:80"
+      - "5000:80"
+    volumes:
+      - ./:/app
     environment:
       ConnectionStrings:DefaultConnection: "Server=database;Initial Catalog=CloudIn;User Id=sa;Password=P@55w0rd123;"
     depends_on:
