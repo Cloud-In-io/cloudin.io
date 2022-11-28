@@ -16,10 +16,18 @@ public class FileResolver
         return userRepository.GetAll().AsQueryable().Where(user => user.Id == parent.OwnerUserId);
     }
 
-    public string? GetMediaUrl(IResolverContext context, [Service] LinkGenerator linker)
+    public string? GetMediaUrl(
+        IResolverContext context,
+        [Service] IHttpContextAccessor httpContextAccessor,
+        [Service] LinkGenerator linker
+    )
     {
         var parent = context.Parent<FileEntity>();
 
-        return linker.GetPathByName("download", values: new { FileId = parent.Id });
+        return linker.GetUriByName(
+            httpContext: httpContextAccessor?.HttpContext ?? default!,
+            endpointName: "download",
+            values: new { FileId = parent.Id }
+        );
     }
 }

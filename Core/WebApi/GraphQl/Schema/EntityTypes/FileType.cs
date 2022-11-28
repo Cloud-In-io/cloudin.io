@@ -13,13 +13,12 @@ public class FileType : ObjectType<FileEntity>
 
         typeDesc
             .Field("Url")
-            .ResolveWith<FileResolver>(res => res.GetMediaUrl(default!, default!));
+            .ResolveWith<FileResolver>(res => res.GetMediaUrl(default!, default!, default!));
 
         typeDesc
             .Field("OwnerUser")
             .UseFirstOrDefault()
             .UseProjection()
             .ResolveWith<FileResolver>(res => res.GetOwnerUser(default!, default!));
-
     }
 }
