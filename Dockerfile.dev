@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+# Remote debugger
+RUN apt-get update \
+  && apt-get install unzip \
+  && curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l /vsdbg
+
+# App configuration
+WORKDIR /app
+COPY . /app
+RUN dotnet restore
+
+EXPOSE 80
+ENV ASPNETCORE_URLS=http://*:80
+ENV ASPNETCORE_ENVIRONMENT=Development
+
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "./Core/WebApi/WebApi.csproj"]

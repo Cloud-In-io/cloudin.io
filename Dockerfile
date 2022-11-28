@@ -4,8 +4,11 @@ COPY . .
 RUN dotnet publish CloudIn.sln -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
+
 WORKDIR /app
+COPY --from=build /app .
+
 EXPOSE 80
 EXPOSE 443
-COPY --from=build /app .
+
 ENTRYPOINT ["dotnet", "WebApi.dll"]
