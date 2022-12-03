@@ -10,7 +10,7 @@ public class FileEntity : IBaseEntity
 
     public string MimeType { get; set; } = default!;
 
-    public string PhysicalPath { get; set; } = default!;
+    public string FilePath { get; set; } = default!;
 
     public virtual FolderEntity ParentFolder { get; protected set; } = default!;
 

@@ -8,7 +8,7 @@ public class FileType : ObjectType<FileEntity>
     protected override void Configure(IObjectTypeDescriptor<FileEntity> typeDesc)
     {
         typeDesc.Name("File");
-        typeDesc.Field(folder => folder.PhysicalPath).Ignore();
+        typeDesc.Field(folder => folder.FilePath).Ignore();
         typeDesc.Field(folder => folder.OwnerUserId).IsProjected();
 
         typeDesc

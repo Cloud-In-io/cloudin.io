@@ -62,9 +62,9 @@ public class FileService : IFileService
                 Content = filePayload.Content,
             };
 
-        var physicalPath = await _fileSystemProvider.WriteAsync(writeFileValues);
+        var virtualPath = await _fileSystemProvider.WriteAsync(writeFileValues);
 
-        file.PhysicalPath = physicalPath;
+        file.FilePath = virtualPath;
         await _fileRepository.AddAsync(file);
 
         file.MoveToFolder(parentFolder);

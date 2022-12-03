@@ -11,14 +11,15 @@ public class FileSystemProvider : IFileSystemProvider, IAsyncDisposable
     public FileSystemProvider(string rootPath)
     {
         _rootPath = new DirectoryInfo(rootPath);
-        if(!_rootPath.Exists) _rootPath.Create();
+        if (!_rootPath.Exists)
+            _rootPath.Create();
     }
 
     public Task RemoveAsync(string filepath)
     {
         var fileInfo = new FileInfo(filepath);
 
-        if(!fileInfo.Exists)
+        if (!fileInfo.Exists)
         {
             throw new FileNotFoundException("The file has already been removed.");
         }
@@ -30,32 +31,43 @@ public class FileSystemProvider : IFileSystemProvider, IAsyncDisposable
 
     public async Task<string> WriteAsync(IWriteFileValues fileValues)
     {
-        var directory = _rootPath.EnumerateDirectories(fileValues.FilePath).FirstOrDefault() ?? _rootPath.CreateSubdirectory(fileValues.FilePath);
+        var directory =
+            _rootPath.EnumerateDirectories(fileValues.FilePath).FirstOrDefault()
+            ?? _rootPath.CreateSubdirectory(fileValues.FilePath);
 
-        if(directory == null)
+        if (directory == null)
             throw new DirectoryNotFoundException();
 
-        var path = Path.Combine(directory.FullName, fileValues.FileName);
-        var fileName = Path.ChangeExtension(path, fileValues.Extension);
+        var fileFolder =
+            directory.EnumerateDirectories(fileValues.FileName).FirstOrDefault()
+            ?? directory.CreateSubdirectory(fileValues.FileName);
 
-        var fileInfo = new FileInfo(fileName);
+        var filePath = Path.Combine(fileFolder.FullName, "file");
+        var fileName = Path.ChangeExtension(filePath, fileValues.Extension);
 
-        FileStream = fileInfo.Create();
+        var file = new FileInfo(fileName);
+
+        FileStream = file.Create();
 
         await fileValues.Content.CopyToAsync(FileStream);
 
         await FileStream.FlushAsync();
 
-        return fileInfo.FullName;
+        var virtualPath = Path.GetRelativePath(_rootPath.FullName, file.FullName);
+
+        return virtualPath;
     }
 
-    public async Task<FileStream> OpenReadAsync(string fileName)
+    public async Task<FileStream> OpenReadAsync(string virtualPath)
     {
         await Task.Yield();
-        
-        var fileInfo = new FileInfo(fileName);
 
-        if(!fileInfo.Exists) throw new FileNotFoundException();
+        var physicalPath = Path.Combine(_rootPath.FullName, virtualPath);
+
+        var fileInfo = new FileInfo(physicalPath);
+
+        if (!fileInfo.Exists)
+            throw new FileNotFoundException();
 
         FileStream = fileInfo.OpenRead();
 
@@ -64,7 +76,6 @@ public class FileSystemProvider : IFileSystemProvider, IAsyncDisposable
 
     ValueTask IAsyncDisposable.DisposeAsync()
     {
-        Console.WriteLine("Dispose");
         return FileStream.DisposeAsync();
     }
 }

@@ -10,7 +10,7 @@ public partial class FileServiceTests
 {
     [TestMethod]
     public async Task Should_Write_A_File()
-    {       
+    {
         var fileRepository = new MockFileRepository();
         var fileSystemProvider = new MockFileSystemProvider();
         var fileService = new FileService(
@@ -37,8 +37,8 @@ public partial class FileServiceTests
 
         Assert.IsInstanceOfType(writtenFile, typeof(FileEntity));
         Assert.IsNotNull(writtenFile);
-        Assert.IsNotNull(writtenFile.PhysicalPath);
-        Assert.AreEqual(expectedPath, writtenFile.PhysicalPath);
+        Assert.IsNotNull(writtenFile.FilePath);
+        Assert.AreEqual(expectedPath, writtenFile.FilePath);
         Assert.AreEqual(filePayload.Name, writtenFile.Name);
         Assert.AreEqual(filePayload.OwnerUserId, writtenFile.OwnerUserId);
         Assert.AreEqual(1, _folder.Files.Count);
