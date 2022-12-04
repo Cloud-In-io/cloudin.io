@@ -7,11 +7,11 @@ namespace CloudIn.Core.WebApi.Middleware;
 
 public static class DownloadMiddleware
 {
-    public static IEndpointConventionBuilder MapDownloadEndpoint(
-        this WebApplication app,
-        string path = "/api/media/{fileId}"
+    public static IEndpointConventionBuilder MapDownload(
+        this IEndpointRouteBuilder endpoints,
+        string path
     ) =>
-        app.MapGet(
+        endpoints.MapGet(
             path,
             async (
                 [FromRoute] Guid fileId,

@@ -53,8 +53,11 @@ var app = builder.Build();
 
 await app.ApplyMigrationsAsync<DataContext>();
 
-app.MapGraphQL(path: "/api/graphql");
-app.MapUploadEndpoint();
-app.MapDownloadEndpoint().WithName("download");
+app.UseRouting();
+
+
+app.MapGraphQL(path: "/api/graphql").WithName("graphql");
+app.MapUpload(path: "/api/upload");
+app.MapDownload(path: "/api/media/{fileId}").WithName("download");
 
 app.Run();

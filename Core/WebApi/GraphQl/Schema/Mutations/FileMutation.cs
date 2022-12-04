@@ -18,9 +18,9 @@ public class FileMutation
     )
     {
         var settings = settingsProvider.Value;
-        var endpoint = "/api/upload";
+        var baseUri = new Uri(WebHelper.GetBaseUri(httpContextAccessor) ?? string.Empty);
 
-        /* Do some validation */
+        /* Do some validation Here*/
 
         var token = TokenHelper.WriteToken(
             secret: settings.UploadJWTSecret,
@@ -28,8 +28,19 @@ public class FileMutation
             values: presignedPayload
         );
 
-        var uploadUrl = QueryHelpers.AddQueryString(endpoint, "token", token);
-        
-        return new(uploadUrl);
+        var uploadUri = new Uri(baseUri, "/api/upload");
+
+        var uploadUriWithQuery = QueryHelpers.AddQueryString(
+            uri: uploadUri.ToString(),
+            name: nameof(token),
+            value: token
+        );
+
+        if (string.IsNullOrEmpty(uploadUriWithQuery))
+        {
+            throw new RouteCreationException("Could not create the upload route");
+        }
+
+        return new(uploadUriWithQuery);
     }
 }
