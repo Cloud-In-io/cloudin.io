@@ -11,6 +11,7 @@ services:
       MSSQL_SA_PASSWORD: "P@55w0rd123"
     ports:
       - "5431:1431"
+      - "5433:1433"
     volumes:
       - ./.docker/:/var/opt/mssql/data
     healthcheck:

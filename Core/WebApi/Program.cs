@@ -14,12 +14,16 @@ using CloudIn.Core.WebApi.Common.Extensions;
 using CloudIn.Core.WebApi.Common.Settings;
 using CloudIn.Core.WebApi.GraphQl.Schema;
 using CloudIn.Core.WebApi.Middleware;
+using tusdotnet.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
+var settingsSection = builder.Configuration.GetRequiredSection("Settings");
+var settingsValues = settingsSection.Get<AppSettings>();
 
 builder.Services
+    .AddCors()
     .AddHttpContextAccessor()    
-    .Configure<AppSettings>(builder.Configuration.GetSection("Settings"))
+    .Configure<AppSettings>(settingsSection)
     .AddPooledDbContextFactory<DataContext>(
         opt =>
             opt.UseSqlServer(
@@ -28,12 +32,13 @@ builder.Services
             )
     );
 
+
 builder.Services
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddScoped<IUserService, UserService>()
     .AddScoped<IFileService, FileService>()
     .AddScoped<IFolderService, FolderService>()
-    .AddScoped<IFileSystemProvider, FileSystemProvider>(_ => new FileSystemProvider(@"./public/uploads"))
+    .AddScoped<IFileSystemProvider, FileSystemProvider>(_ => new FileSystemProvider(rootPath: settingsValues.UploadDataDir))
     .AddWithPooledDbContext<IUserRepository, UserRepository>()
     .AddWithPooledDbContext<IFileRepository, FileRepository>()
     .AddWithPooledDbContext<IFolderRepository, FolderRepository>();
@@ -55,9 +60,15 @@ await app.ApplyMigrationsAsync<DataContext>();
 
 app.UseRouting();
 
+app.UseCors(builder => builder
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+    .WithExposedHeaders(CorsHelper.GetExposedHeaders())
+);
 
 app.MapGraphQL(path: "/api/graphql").WithName("graphql");
-app.MapUpload(path: "/api/upload");
+app.MapUpload(path: "/api/upload", storePath: settingsValues.UploadTempDataDir ?? @"./tmp/uploads/");
 app.MapDownload(path: "/api/media/{fileId}").WithName("download");
 
 app.Run();

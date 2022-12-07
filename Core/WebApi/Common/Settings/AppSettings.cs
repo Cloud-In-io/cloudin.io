@@ -2,6 +2,10 @@ namespace CloudIn.Core.WebApi.Common.Settings;
 
 public class AppSettings
 {
+    public string UploadDataDir { get; set; } = default!;
+
+    public string? UploadTempDataDir { get; set; }
+
     public string AuthenticationJWTSecret { get; set; } = default!;
 
     public int AuthenticationExpirationSeconds { get; set; } = default!;

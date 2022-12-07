@@ -10,9 +10,10 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "P@55w0rd123"
     ports:
-      - "1433:1433"
+      - "5431:1431"
+      - "5433:1433"
     volumes:
-      - ./.docker/:/var/opt/mssql/data
+      - ./.docker/database/:/var/opt/mssql/data
     healthcheck:
       test:
         [
@@ -33,7 +34,10 @@ services:
     build: .
     ports:
       - "3333:80"
+    volumes:
+      - ./.docker/app/uploads/:/app/public/uploads
     environment:
+      Settings:UploadDataDir: "/app/public/uploads"
       ConnectionStrings:DefaultConnection: "Server=database;Initial Catalog=CloudIn;User Id=sa;Password=P@55w0rd123;"
     depends_on:
       database:
