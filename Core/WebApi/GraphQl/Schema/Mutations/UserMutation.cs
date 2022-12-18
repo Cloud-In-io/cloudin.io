@@ -1,5 +1,5 @@
-using CloudIn.Core.ApplicationDomain.Entities;
-using CloudIn.Core.ApplicationDomain.Services.UserService.Interfaces;
+using CloudIn.Core.Domain.Entities;
+using CloudIn.Core.Domain.Services.UserService.Interfaces;
 
 namespace CloudIn.Core.WebApi.GraphQl.Schema.Mutations;
 

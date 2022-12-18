@@ -1,4 +1,4 @@
-using CloudIn.Core.ApplicationDomain.Entities;
+using CloudIn.Core.Domain.Entities;
 using HotChocolate.Data.Filters;
 
 namespace CloudIn.Core.WebApi.GraphQl.Schema.FilterTypes;

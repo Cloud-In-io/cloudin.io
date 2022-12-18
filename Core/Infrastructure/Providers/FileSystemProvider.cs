@@ -1,4 +1,4 @@
-using CloudIn.Core.ApplicationDomain.Contracts.Providers.FileSystemProvider;
+using CloudIn.Core.Domain.Contracts.Providers.FileSystemProvider;
 
 namespace CloudIn.Core.Infrastructure.Providers;
 

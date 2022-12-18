@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using CloudIn.Core.ApplicationDomain.Entities;
-using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
+using CloudIn.Core.Domain.Entities;
+using CloudIn.Core.Domain.Contracts.Repositories;
 
 namespace CloudIn.Core.Data.Repositories;
 

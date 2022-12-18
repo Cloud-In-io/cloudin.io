@@ -10,7 +10,7 @@ using Microsoft.Extensions.Primitives;
 using CloudIn.Core.WebApi.Common.Helpers;
 using CloudIn.Core.WebApi.Common.Settings;
 using CloudIn.Core.WebApi.Common.Contracts;
-using CloudIn.Core.ApplicationDomain.Services.FileService.Interfaces;
+using CloudIn.Core.Domain.Services.FileService.Interfaces;
 
 namespace CloudIn.Core.WebApi.Middleware;
 

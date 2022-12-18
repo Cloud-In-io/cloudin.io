@@ -1,4 +1,4 @@
-using CloudIn.Core.ApplicationDomain.Entities;
+using CloudIn.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloudIn.Core.Data;

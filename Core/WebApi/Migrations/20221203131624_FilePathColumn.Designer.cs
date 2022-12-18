@@ -24,7 +24,7 @@ namespace CloudIn.Core.WebApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.FileEntity", b =>
+            modelBuilder.Entity("CloudIn.Core.Domain.Entities.FileEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace CloudIn.Core.WebApi.Migrations
                     b.ToTable("Files");
                 });
 
-            modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", b =>
+            modelBuilder.Entity("CloudIn.Core.Domain.Entities.FolderEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,7 +85,7 @@ namespace CloudIn.Core.WebApi.Migrations
                     b.ToTable("Folders");
                 });
 
-            modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.UserEntity", b =>
+            modelBuilder.Entity("CloudIn.Core.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,15 +114,15 @@ namespace CloudIn.Core.WebApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.FileEntity", b =>
+            modelBuilder.Entity("CloudIn.Core.Domain.Entities.FileEntity", b =>
                 {
-                    b.HasOne("CloudIn.Core.ApplicationDomain.Entities.UserEntity", null)
+                    b.HasOne("CloudIn.Core.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", "ParentFolder")
+                    b.HasOne("CloudIn.Core.Domain.Entities.FolderEntity", "ParentFolder")
                         .WithMany("Files")
                         .HasForeignKey("ParentFolderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -131,28 +131,28 @@ namespace CloudIn.Core.WebApi.Migrations
                     b.Navigation("ParentFolder");
                 });
 
-            modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", b =>
+            modelBuilder.Entity("CloudIn.Core.Domain.Entities.FolderEntity", b =>
                 {
-                    b.HasOne("CloudIn.Core.ApplicationDomain.Entities.UserEntity", null)
+                    b.HasOne("CloudIn.Core.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", null)
+                    b.HasOne("CloudIn.Core.Domain.Entities.FolderEntity", null)
                         .WithMany("Folders")
                         .HasForeignKey("ParentFolderId")
                         .OnDelete(DeleteBehavior.NoAction);
                 });
 
-            modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.UserEntity", b =>
+            modelBuilder.Entity("CloudIn.Core.Domain.Entities.UserEntity", b =>
                 {
-                    b.HasOne("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", null)
+                    b.HasOne("CloudIn.Core.Domain.Entities.FolderEntity", null)
                         .WithOne()
-                        .HasForeignKey("CloudIn.Core.ApplicationDomain.Entities.UserEntity", "RootFolderId")
+                        .HasForeignKey("CloudIn.Core.Domain.Entities.UserEntity", "RootFolderId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.OwnsOne("CloudIn.Core.ApplicationDomain.Entities.UserName", "Name", b1 =>
+                    b.OwnsOne("CloudIn.Core.Domain.Entities.UserName", "Name", b1 =>
                         {
                             b1.Property<Guid>("UserEntityId")
                                 .HasColumnType("uniqueidentifier");
@@ -176,7 +176,7 @@ namespace CloudIn.Core.WebApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CloudIn.Core.ApplicationDomain.Entities.FolderEntity", b =>
+            modelBuilder.Entity("CloudIn.Core.Domain.Entities.FolderEntity", b =>
                 {
                     b.Navigation("Files");
 

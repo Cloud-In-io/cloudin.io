@@ -1,5 +1,5 @@
-using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
-using CloudIn.Core.ApplicationDomain.Entities;
+using CloudIn.Core.Domain.Contracts.Repositories;
+using CloudIn.Core.Domain.Entities;
 
 namespace CloudIn.Core.WebApi.GraphQl.Schema.Queries;
 

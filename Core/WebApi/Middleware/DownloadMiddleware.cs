@@ -1,7 +1,7 @@
 using MimeTypes;
 using Microsoft.AspNetCore.Mvc;
-using CloudIn.Core.ApplicationDomain.Contracts.Providers.FileSystemProvider;
-using CloudIn.Core.ApplicationDomain.Contracts.Repositories;
+using CloudIn.Core.Domain.Contracts.Providers.FileSystemProvider;
+using CloudIn.Core.Domain.Contracts.Repositories;
 
 namespace CloudIn.Core.WebApi.Middleware;
 
