@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using tusdotnet.Helpers;
 using CloudIn.Core.Data;
 using CloudIn.Core.Data.Repositories;
-using CloudIn.Core.Infrastructure.Providers;
 using CloudIn.Core.Domain.Contracts.Repositories;
 using CloudIn.Core.Domain.Contracts.Providers.FileSystemProvider;
 using CloudIn.Core.Domain.Services.UserService;
@@ -13,8 +13,8 @@ using CloudIn.Core.Domain.Services.FolderService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
 using CloudIn.Core.WebApi.Common.Settings;
 using CloudIn.Core.WebApi.GraphQl.Schema;
+using CloudIn.Core.WebApi.Providers;
 using CloudIn.Core.WebApi.Middleware;
-using tusdotnet.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 var settingsSection = builder.Configuration.GetRequiredSection("Settings");

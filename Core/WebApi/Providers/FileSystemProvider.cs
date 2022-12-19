@@ -1,6 +1,7 @@
 using CloudIn.Core.Domain.Contracts.Providers.FileSystemProvider;
+using Path = System.IO.Path;
 
-namespace CloudIn.Core.Infrastructure.Providers;
+namespace CloudIn.Core.WebApi.Providers;
 
 public class FileSystemProvider : IFileSystemProvider, IAsyncDisposable
 {
