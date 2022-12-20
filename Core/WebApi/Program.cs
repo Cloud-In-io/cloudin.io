@@ -22,7 +22,7 @@ var settingsValues = settingsSection.Get<AppSettings>();
 
 builder.Services
     .AddCors()
-    .AddHttpContextAccessor()    
+    .AddHttpContextAccessor()
     .Configure<AppSettings>(settingsSection)
     .AddPooledDbContextFactory<DataContext>(
         opt =>
@@ -31,7 +31,6 @@ builder.Services
                 b => b.MigrationsAssembly("WebApi")
             )
     );
-
 
 builder.Services
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
@@ -54,8 +53,9 @@ builder.Services
     .AddProjections()
     .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = builder.Environment.IsDevelopment());
 
-var app = builder.Build();
+builder.Services.AddPlugins(path: settingsValues.PluginsDir);
 
+var app = builder.Build();
 await app.ApplyMigrationsAsync<DataContext>();
 
 app.UseRouting();
@@ -70,5 +70,7 @@ app.UseCors(builder => builder
 app.MapGraphQL(path: "/api/graphql").WithName("graphql");
 app.MapUpload(path: "/api/upload", storePath: settingsValues.UploadTempDataDir ?? @"./tmp/uploads/");
 app.MapDownload(path: "/api/media/{fileId}").WithName("download");
+
+app.UsePlugins();
 
 app.Run();

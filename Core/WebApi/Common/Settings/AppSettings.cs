@@ -2,6 +2,8 @@ namespace CloudIn.Core.WebApi.Common.Settings;
 
 public class AppSettings
 {
+    public string PluginsDir { get; set; } = default!;
+    
     public string UploadDataDir { get; set; } = default!;
 
     public string? UploadTempDataDir { get; set; }
