@@ -38,6 +38,7 @@ bld/
 roadmap.md
 tmp
 **/public/uploads/*
+**/plugins/
 .docker/
 **/appsettings*.json
 
