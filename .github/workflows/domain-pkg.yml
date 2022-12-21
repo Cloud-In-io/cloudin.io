@@ -5,11 +5,11 @@ name: 📦 Domain package publishing
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
     paths: ["Core/Domain/**"]
     
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
     paths: ["Core/Domain/**"]
 
 jobs:
