@@ -5,6 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>CloudIn.Core.Domain</RootNamespace>
+
+    <PackageId>CloudIn.Core.Domain</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Kalleby Santos</Authors>
+    <Repository>https://github.com/kallebysantos/cloudin.io</Repository>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
