@@ -1,7 +1,8 @@
 using CloudIn.Core.Domain.Contracts.Providers.FileSystemProvider;
-using Path = System.IO.Path;
+using CloudIn.Plugin.FileSystem.Interfaces;
+using Microsoft.Extensions.Options;
 
-namespace CloudIn.Core.WebApi.Providers;
+namespace CloudIn.Plugin.FileSystem.Providers;
 
 public class FileSystemProvider : IFileSystemProvider, IAsyncDisposable
 {
@@ -9,9 +10,9 @@ public class FileSystemProvider : IFileSystemProvider, IAsyncDisposable
 
     private FileStream FileStream { get; set; } = default!;
 
-    public FileSystemProvider(string rootPath)
+    public FileSystemProvider(IOptions<FileSystemOptions> options)
     {
-        _rootPath = new DirectoryInfo(rootPath);
+        _rootPath = new DirectoryInfo(options.Value.SavePath);
         if (!_rootPath.Exists)
             _rootPath.Create();
     }

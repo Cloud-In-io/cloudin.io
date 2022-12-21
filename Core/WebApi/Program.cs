@@ -3,7 +3,6 @@ using tusdotnet.Helpers;
 using CloudIn.Core.Data;
 using CloudIn.Core.Data.Repositories;
 using CloudIn.Core.Domain.Contracts.Repositories;
-using CloudIn.Core.Domain.Contracts.Providers.FileSystemProvider;
 using CloudIn.Core.Domain.Services.UserService;
 using CloudIn.Core.Domain.Services.UserService.Interfaces;
 using CloudIn.Core.Domain.Services.FileService;
@@ -37,7 +36,6 @@ builder.Services
     .AddScoped<IUserService, UserService>()
     .AddScoped<IFileService, FileService>()
     .AddScoped<IFolderService, FolderService>()
-    .AddScoped<IFileSystemProvider, FileSystemProvider>(_ => new FileSystemProvider(rootPath: settingsValues.UploadDataDir))
     .AddWithPooledDbContext<IUserRepository, UserRepository>()
     .AddWithPooledDbContext<IFileRepository, FileRepository>()
     .AddWithPooledDbContext<IFolderRepository, FolderRepository>();
