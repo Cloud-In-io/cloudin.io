@@ -1,0 +1,38 @@
+name: 🐋 Build and publish docker image
+
+on:
+  push:
+    branches: ["release"]
+
+env:
+  registry: docker.pkg.github.com
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Get latest code
+        uses: actions/checkout@v3
+      
+      - name: 🔑 Log in to GitHub Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 📄 Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v2
+        with:
+          images: ${{ env.registry }}/${{ env.IMAGE_NAME }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 🏗️ Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
