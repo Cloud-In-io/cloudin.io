@@ -14,7 +14,7 @@ on:
     branches: ["release"]
 
 env:
-  registry: ghct.io
+  registry: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
