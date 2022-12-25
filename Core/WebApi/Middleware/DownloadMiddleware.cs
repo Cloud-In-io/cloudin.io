@@ -28,10 +28,11 @@ public static class DownloadMiddleware
                 var downloadName = System.IO.Path.ChangeExtension(file.Name, fileExtension);
 
                 return Results.File(
-                    fileStream: await fileSystemProvider.OpenReadAsync(file.FilePath),
-                    contentType: file.MimeType,
-                    fileDownloadName: downloadName
-                );
+                        fileStream: await fileSystemProvider.OpenReadAsync(file.FilePath),
+                        contentType: file.MimeType,
+                        fileDownloadName: downloadName,
+                        enableRangeProcessing: true
+                    );
             }
         );
 }
