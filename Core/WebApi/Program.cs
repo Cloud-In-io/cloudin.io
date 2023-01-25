@@ -15,6 +15,7 @@ using CloudIn.Core.Domain.Services.FolderService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
 using CloudIn.Core.WebApi.Common.Settings;
 using CloudIn.Core.WebApi.GraphQl.Schema;
+using CloudIn.Core.WebApi.GraphQl.Schema.Handlers;
 using CloudIn.Core.WebApi.Providers;
 using CloudIn.Core.WebApi.Middleware;
 
@@ -61,6 +62,7 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
+    // .AddAuthorizationHandler<CustomAuthorizationHandler>()
     .RegisterDbContext<DataContext>(DbContextKind.Pooled)
     .AddTypes()
     .AddQueries()
