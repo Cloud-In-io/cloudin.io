@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.WebUtilities;
+using HotChocolate.AspNetCore.Authorization;
 using CloudIn.Core.WebApi.Common.Helpers;
 using CloudIn.Core.WebApi.Common.Settings;
 using CloudIn.Core.WebApi.GraphQl.Schema.InputTypes;
@@ -11,7 +12,8 @@ public class FileMutation
 {
     public record PresignedUploadResult(string url);
 
-    public PresignedUploadResult GetPresignedUpload(
+    [Authorize]
+    public PresignedUploadResult? GetPresignedUpload(
         [Service] IHttpContextAccessor httpContextAccessor,
         [Service] IOptions<AppSettings> settingsProvider,
         PresignedUploadType presignedPayload

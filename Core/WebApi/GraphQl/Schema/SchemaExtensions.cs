@@ -17,6 +17,7 @@ public static class SchemaExtensions
     public static IRequestExecutorBuilder AddMutations(this IRequestExecutorBuilder builder) =>
         builder
             .AddMutationType<BaseMutation>()
+            .AddTypeExtension<AuthMutation>()
             .AddTypeExtension<UserMutation>()
             .AddTypeExtension<FileMutation>()
             .AddTypeExtension<FolderMutation>();

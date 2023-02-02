@@ -1,4 +1,7 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using tusdotnet.Helpers;
 using CloudIn.Core.Data;
 using CloudIn.Core.Data.Repositories;
@@ -12,6 +15,7 @@ using CloudIn.Core.Domain.Services.FolderService.Interfaces;
 using CloudIn.Core.WebApi.Common.Extensions;
 using CloudIn.Core.WebApi.Common.Settings;
 using CloudIn.Core.WebApi.GraphQl.Schema;
+using CloudIn.Core.WebApi.GraphQl.Schema.Handlers;
 using CloudIn.Core.WebApi.Providers;
 using CloudIn.Core.WebApi.Middleware;
 
@@ -31,6 +35,22 @@ builder.Services
             )
     );
 
+var secret = Encoding.ASCII.GetBytes(settingsValues.AuthenticationJWTSecret);
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(secret)
+        }
+    );
+
+builder.Services.AddAuthorization();
+
 builder.Services
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddScoped<IUserService, UserService>()
@@ -42,6 +62,7 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
+    // .AddAuthorizationHandler<CustomAuthorizationHandler>()
     .RegisterDbContext<DataContext>(DbContextKind.Pooled)
     .AddTypes()
     .AddQueries()
@@ -58,6 +79,9 @@ await app.ApplyMigrationsAsync<DataContext>();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseCors(builder => builder
     .AllowAnyHeader()
     .AllowAnyMethod()
@@ -66,6 +90,7 @@ app.UseCors(builder => builder
 );
 
 app.MapGraphQL(path: "/api/graphql").WithName("graphql");
+app.MapGraphQLSchema(pattern: "/api/graphql/schema").WithName("graphql.schema");
 app.MapUpload(path: "/api/upload", storePath: settingsValues.UploadTempDataDir ?? @"./tmp/uploads/");
 app.MapDownload(path: "/api/media/{fileId}").WithName("download");
 
