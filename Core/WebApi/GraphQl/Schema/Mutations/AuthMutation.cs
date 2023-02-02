@@ -11,8 +11,8 @@ public class AuthMutation
 {
     public record AuthenticationResult(string token);
 
-    [Error(typeof(UnauthorizedAccessException))]
-    public async Task<AuthenticationResult>? Authenticate(
+    //[Error(typeof(UnauthorizedAccessException))]
+    public async Task<AuthenticationResult?> Authenticate(
         [Service] IHttpContextAccessor httpContextAccessor,
         [Service] IOptions<AppSettings> settingsProvider,
         [Service] IUserRepository userRepository,
@@ -20,9 +20,10 @@ public class AuthMutation
     )
     {
         var user = await userRepository.GetUserByEmailAsync(authenticatePayload.Username);
-        if(user == null || user.Password != authenticatePayload.Password)
+        if (user == null || user.Password != authenticatePayload.Password)
         {
-            throw new UnauthorizedAccessException("User not exists or invalid Username/Password");
+            // throw new UnauthorizedAccessException("User not exists or invalid Username/Password");
+            throw new GraphQLException("User not exists or invalid Username/Password");
         }
 
         var settings = settingsProvider.Value;
